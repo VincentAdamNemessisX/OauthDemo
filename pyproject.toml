@@ -1,0 +1,23 @@
+[project]
+name = "oauthdemo"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "VincentAdamNemessis",email = "vincentadamnemessis@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[all] (>=0.115.12,<0.116.0)",
+    "httpx (>=0.28.1,<0.29.0)",
+    "starlette[full] (>=0.46.1,<0.47.0)",
+    "itsdangerous (>=2.2.0,<3.0.0)",
+    "python-jose[cryptography] (>=3.4.0,<4.0.0)",
+    "passlib[bcrypt] (>=1.7.4,<2.0.0)",
+    "pydantic (>=2.11.1,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

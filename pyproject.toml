@@ -3,7 +3,7 @@ name = "oauthdemo"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "VincentAdamNemessis",email = "vincentadamnemessis@gmail.com"}
+    { name = "VincentAdamNemessis", email = "vincentadamnemessis@gmail.com" }
 ]
 readme = "README.md"
 requires-python = ">=3.12"

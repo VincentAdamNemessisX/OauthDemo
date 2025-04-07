@@ -1,16 +1,16 @@
-  services:
-    oauth:
-      build:
-        context: ./
-        dockerfile: Dockerfile
-      container_name: oauth
-      environment:
-        # time zone
-        TZ: Asia/Shanghai
-      restart: always
-      ports:
-        - "5550:5555"
-      volumes:
+services:
+  oauth:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: oauth
+    environment:
+      # time zone
+      TZ: Asia/Shanghai
+    restart: always
+    ports:
+      - "5550:5555"
+    volumes:
       - ./log:/log
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro

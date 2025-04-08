@@ -8,29 +8,24 @@ from fastapi.responses import RedirectResponse
 from jose import JWTError, jwt  # 导入 JWTError 和 jwt 用于刷新
 
 # 导入配置
-from config.mock_config import (
+from config.providers import (
     GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_REDIRECT_URI,
     GITHUB_AUTHORIZE_URL, GITHUB_ACCESS_TOKEN_URL, GITHUB_USER_API_URL,
-    GITHUB_SCOPES, ACCESS_TOKEN_EXPIRE_MINUTES, REFRESH_TOKEN_EXPIRE_MINUTES  # 导入有效期
+    GITHUB_SCOPES, ACCESS_TOKEN_EXPIRE_MINUTES, REFRESH_TOKEN_EXPIRE_MINUTES,  # 导入有效期
+    SECRET_KEY, ALGORITHM  # 导入密钥和算法用于刷新
 )
-from config.mock_config import SECRET_KEY, ALGORITHM  # 导入密钥和算法用于刷新
 # 导入依赖
 from core.deps import get_current_active_user  # 导入 get_current_user 用于刷新
 # 导入模型
-from model.mock_model import Token, User, TokenData, fake_users_db  # 确保 Token 已更新
-from service.mock_token_service import create_access_token, create_refresh_token  # 导入 create_refresh_token
+from model.mocker.mock_model import Token, GithubUser, GithubTokenData, fake_users_db  # 确保 Token 已更新
+from service.mocker.mock_token_service import create_access_token, create_refresh_token  # 导入 create_refresh_token
 # 导入服务
-from service.mock_user_service import add_or_update_user, get_user_by_github_id  # 导入 get_user_by_github_id
+from service.mocker.mock_user_service import add_or_update_user, get_user_by_github_id  # 导入 get_user_by_github_id
 
 router = APIRouter(
     tags=["User Authentication (v1)"],
     prefix="/code/to/access"
 )
-
-
-@router.get("/")
-async def root(request: Request):
-    return "Please use `/login/github` to access protected endpoints."
 
 
 @router.get("/login/github")
@@ -132,7 +127,7 @@ async def refresh_access_token(
         #     raise credentials_exception
 
         github_id = int(github_id_str)
-        token_data = TokenData(github_id=github_id)
+        token_data = GithubTokenData(github_id=github_id)
     except (JWTError, ValueError):
         raise credentials_exception
 
@@ -152,15 +147,15 @@ async def refresh_access_token(
 
 
 # --- 受保护的用户端点 --- (保持不变)
-@router.get("/users/me/", response_model=User)
+@router.get("/users/me/", response_model=GithubUser)
 async def read_users_me(
-        current_user: Annotated[User, Depends(get_current_active_user)]
+        current_user: Annotated[GithubUser, Depends(get_current_active_user)]
 ):
     return current_user
 
 
 @router.get("/users/me/items/")
 async def read_own_items(
-        current_user: Annotated[User, Depends(get_current_active_user)]
+        current_user: Annotated[GithubUser, Depends(get_current_active_user)]
 ):
     return [{"item_id": "Foo", "owner_github_id": current_user.github_id}]

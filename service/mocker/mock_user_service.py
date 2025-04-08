@@ -1,10 +1,10 @@
 # --- 辅助函数 ---
 from typing import Optional
 
-from model.mock_model import User
+from model.mocker.mock_model import GithubUser
 
 
-def get_user_by_github_id(db, github_id: int) -> Optional[User]:
+def get_user_by_github_id(db, github_id: int) -> Optional[GithubUser]:
     """根据 GitHub ID 从模拟数据库获取用户"""
     # 实际应用中这里应该是数据库查询
     for user in db.values():
@@ -13,7 +13,7 @@ def get_user_by_github_id(db, github_id: int) -> Optional[User]:
     return None
 
 
-def add_or_update_user(db, user_data: dict) -> User:
+def add_or_update_user(db, user_data: dict) -> GithubUser:
     """根据从 GitHub 获取的数据添加或更新用户"""
     github_id = user_data.get("id")
     if not github_id:
@@ -21,7 +21,7 @@ def add_or_update_user(db, user_data: dict) -> User:
 
     existing_user = get_user_by_github_id(db, github_id)
 
-    user_info = User(
+    user_info = GithubUser(
         username=user_data.get("login"),
         github_id=github_id,
         name=user_data.get("name"),

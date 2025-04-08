@@ -3,7 +3,8 @@ from typing import Union
 
 from jose import jwt
 
-from config.mock_config import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY, SERVICE_ACCESS_TOKEN_EXPIRE_MINUTES, REFRESH_TOKEN_EXPIRE_MINUTES
+from config.providers import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY, \
+    SERVICE_ACCESS_TOKEN_EXPIRE_MINUTES, REFRESH_TOKEN_EXPIRE_MINUTES
 
 
 def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):

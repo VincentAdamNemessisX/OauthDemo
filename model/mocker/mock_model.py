@@ -9,7 +9,7 @@ fake_users_db = {}
 
 
 # --- Pydantic 模型 ---
-class User(BaseModel):
+class GithubUser(BaseModel):
     """用户模型，用于数据校验和响应"""
     username: str  # GitHub 用户名
     github_id: int  # GitHub 用户 ID
@@ -23,11 +23,11 @@ class User(BaseModel):
 class Token(BaseModel):
     """包含 Access 和 Refresh Token 的响应模型"""
     access_token: str
-    refresh_token: str | None = None # 添加 refresh_token 字段
+    refresh_token: str | None = None  # 添加 refresh_token 字段
     token_type: str
 
 
-class TokenData(BaseModel):
+class GithubTokenData(BaseModel):
     """解码后的用户 JWT Token 数据模型 (Access Token 或 Refresh Token)"""
     # 使用 github_id 作为用户标识符
     github_id: int | None = None

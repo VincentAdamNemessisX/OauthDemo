@@ -1,26 +1,27 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Form
-from typing import Annotated
 from datetime import timedelta
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, status, Form
 
 # 导入配置
-from config.mock_config import SERVICE_CLIENT_ID, SERVICE_CLIENT_SECRET, SERVICE_ACCESS_TOKEN_EXPIRE_MINUTES
-# 导入模型
-from model.mock_model import ServiceToken, ServiceTokenData
-# 导入服务
-from service.mock_token_service import create_service_access_token
+from config.providers import SERVICE_CLIENT_ID, SERVICE_CLIENT_SECRET, SERVICE_ACCESS_TOKEN_EXPIRE_MINUTES
 # 导入依赖
 from core.deps import get_current_service
+# 导入模型
+from model.mocker.mock_model import ServiceToken, ServiceTokenData
+# 导入服务
+from service.mocker.mock_token_service import create_service_access_token
 
 router = APIRouter(
     prefix="/service/to/access",
-    tags=["Service Authentication (v1)"],   # API 文档中的标签
+    tags=["Service Authentication (v1)"],  # API 文档中的标签
 )
 
 
 @router.post("/token", response_model=ServiceToken)
 async def login_service_for_access_token(
-    client_id: Annotated[str, Form()],
-    client_secret: Annotated[str, Form()]
+        client_id: Annotated[str, Form()],
+        client_secret: Annotated[str, Form()]
 ):
     """
     客户端凭证流程: 服务使用 Client ID 和 Client Secret 获取 Access Token。
@@ -49,7 +50,7 @@ async def login_service_for_access_token(
 
 @router.get("/data")
 async def read_service_data(
-    current_service: Annotated[ServiceTokenData, Depends(get_current_service)]
+        current_service: Annotated[ServiceTokenData, Depends(get_current_service)]
 ):
     """
     受保护的服务端点，需要有效的服务 Access Token。
